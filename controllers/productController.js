@@ -134,37 +134,11 @@ export const deleteProductController = async (req, res) => {
 export const updateProductController = async (req, res) => {
   try {
     console.log("running");
-    const  { name, description, price, category, quantity, shipping }=
-      req.body;
-    // const { photo } = req.files;
-    //alidation
-    switch (true) {
-      case !name:
-        return res.status(500).send({ error: "Name is Required" });
-      case !description:
-        return res.status(500).send({ error: "Description is Required" });
-      case !price:
-        return res.status(500).send({ error: "Price is Required" });
-      case !category:
-        return res.status(500).send({ error: "Category is Required" });
-      case !quantity:
-        return res.status(500).send({ error: "Quantity is Required" });
-      case photo && photo.size > 1000000:
-        return res
-          .status(500)
-          .send({ error: "photo is Required and should be less then 1mb" });
-    }
+    const  updatedData= req.body;
 
-    const products = await productModel.findByIdAndUpdate(
-      req.params.pid,
-      { ...req.fields, slug: slugify(name) },
-      { new: true }
-    );console.log(products);
-    // if (photo) {
-    //   products.photo.data = fs.readFileSync(photo.path);
-    //   products.photo.contentType = photo.type;
-    // }
-    await products.save();
+    const products = await productModel.findByIdAndUpdate(req.params.pid,updatedData,{new:true,runValidators:true});
+    console.log(products);
+
     res.status(201).send({
       success: true,
       message: "Product Updated Successfully",

@@ -23,15 +23,12 @@ router.post(
   "/create-product",
   requireSignIn,
   isAdmin,
-  formidable,
   createProductController
 );
 //routes
-router.put(
+router.post(
   "/update-product/:pid",
-  requireSignIn,
   isAdmin,
-  formidable,
   updateProductController
 );
 
